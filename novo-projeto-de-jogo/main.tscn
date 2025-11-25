@@ -13,6 +13,7 @@ grow_vertical = 2
 script = ExtResource("1_ig7tw")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
 
 [node name="imagem" type="TextureRect" parent="."]
 layout_mode = 0
@@ -36,14 +37,14 @@ offset_right = 666.0
 offset_bottom = 980.0
 text = ">"
 
-[node name="BtnAudio" type="Button" parent="."]
+[node name="BtnAudio" type="TextureButton" parent="."]
 layout_mode = 0
-offset_left = 1.0
-offset_top = 4.0
-offset_right = 25.0
-offset_bottom = 27.0
+offset_left = 697.0
+offset_top = 5.0
+offset_right = 721.0
+offset_bottom = 26.0
 
-[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 
 [node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
 layout_mode = 0
