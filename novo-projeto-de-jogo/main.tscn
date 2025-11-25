@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=3 uid="uid://d2cxb7y7ask01"]
+
+[ext_resource type="Script" uid="uid://dtd0rkkhueltw" path="res://main.gd" id="1_ig7tw"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ig7tw")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="imagem" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 758.0
+offset_bottom = 1017.0
+stretch_mode = 6
+
+[node name="BtnAnterior" type="Button" parent="."]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 942.0
+offset_right = 148.0
+offset_bottom = 973.0
+text = "<"
+
+[node name="BtnProximo" type="Button" parent="."]
+layout_mode = 0
+offset_left = 574.0
+offset_top = 949.0
+offset_right = 666.0
+offset_bottom = 980.0
+text = ">"
+
+[node name="BtnAudio" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1.0
+offset_top = 4.0
+offset_right = 25.0
+offset_bottom = 27.0
+
+[node name="AudioPlayer" type="AudioStreamPlayer" parent="."]
+
+[node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 0
+offset_left = 129.0
+offset_top = 445.0
+offset_right = 674.0
+offset_bottom = 770.0
+
+[node name="BtnPause" type="Button" parent="VideoPlayer"]
+layout_mode = 0
+offset_right = 8.0
+offset_bottom = 8.0
