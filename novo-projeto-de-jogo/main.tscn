@@ -1,7 +1,36 @@
-[gd_scene load_steps=3 format=3 uid="uid://d2cxb7y7ask01"]
+[gd_scene load_steps=8 format=3 uid="uid://d2cxb7y7ask01"]
 
 [ext_resource type="Script" uid="uid://dtd0rkkhueltw" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="VideoStream" uid="uid://dphga8xuveamg" path="res://assets/videos/video.ogv" id="2_0xm2m"]
+[ext_resource type="Texture2D" uid="uid://bn405t1sfli1" path="res://assets/images/confete.png" id="3_h2yge"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1bvp3"]
+particles_animation = true
+particles_anim_h_frames = 7
+particles_anim_v_frames = 1
+particles_anim_loop = false
+
+[sub_resource type="Gradient" id="Gradient_lquwl"]
+offsets = PackedFloat32Array(0.17284, 0.864198)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_7mycd"]
+gradient = SubResource("Gradient_lquwl")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_272bh"]
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(350, 300, 1)
+spread = 50.0
+initial_velocity_min = 5.0
+initial_velocity_max = 15.0
+angular_velocity_min = -1.60933e-05
+angular_velocity_max = 50.0
+gravity = Vector3(0, 10, 0)
+scale_min = 0.1
+scale_max = 0.3
+color_ramp = SubResource("GradientTexture1D_7mycd")
+anim_offset_min = 0.5
+anim_offset_max = 1.0
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -18,8 +47,10 @@ follow_viewport_enabled = true
 
 [node name="Imagem" type="TextureRect" parent="."]
 layout_mode = 0
-offset_right = 758.0
-offset_bottom = 1017.0
+offset_left = 13.0
+offset_top = -4.0
+offset_right = 771.0
+offset_bottom = 1013.0
 stretch_mode = 6
 
 [node name="BtnAnterior" type="Button" parent="."]
@@ -64,3 +95,11 @@ offset_top = -96.0
 offset_right = 87.0
 offset_bottom = -63.0
 text = "Pausa"
+
+[node name="Particulas3" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_1bvp3")
+position = Vector2(400, 400)
+amount = 100
+texture = ExtResource("3_h2yge")
+visibility_rect = Rect2(-2000, -200, 4000, 600)
+process_material = SubResource("ParticleProcessMaterial_272bh")

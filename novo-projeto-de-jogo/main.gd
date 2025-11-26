@@ -16,6 +16,9 @@ var video_tocando = false
 @onready var video = $VideoPlayer
 @onready var btn_video_toggle = $VideoPlayer/BtnToggle
 
+# Partículas na página 3
+@onready var particulas = $Particulas3
+
 # Cores dos botões laranja
 const COR_PADRAO = Color("#f26423")
 const COR_HOVER = Color("#e0541b")
@@ -48,7 +51,7 @@ func _ready():
 	]
 
 	# Configurar VideoStreamPlayer
-	video.stream = preload("res://assets/videos/video.ogv") # ajuste para o seu vídeo
+	video.stream = preload("res://assets/videos/video.ogv") # ajuste para seu vídeo
 	video.paused = true
 	video.visible = false
 	video_tocando = false
@@ -133,6 +136,13 @@ func atualizar_pagina():
 		video.paused = true
 		video_tocando = false
 
+	# Mostrar partículas somente na página 3
+	if indice == 3:
+		particulas.visible = true
+		particulas.restart()
+	else:
+		particulas.visible = false
+
 	# Áudio automático
 	if indice != 5:
 		if som_ligado:
@@ -177,12 +187,10 @@ func _alternar_audio():
 # ===============================
 func _video_toggle():
 	if video_tocando:
-		# Pausar vídeo mantendo posição
 		video.paused = true
 		video_tocando = false
 		btn_video_toggle.text = "Play"
 	else:
-		# Iniciar ou retomar vídeo
 		if not video.is_playing():
 			video.play()
 		video.paused = false
