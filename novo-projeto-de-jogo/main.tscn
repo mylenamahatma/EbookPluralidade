@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://d2cxb7y7ask01"]
+[gd_scene load_steps=20 format=3 uid="uid://d2cxb7y7ask01"]
 
 [ext_resource type="Script" uid="uid://dtd0rkkhueltw" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="VideoStream" uid="uid://dphga8xuveamg" path="res://assets/videos/video.ogv" id="2_0xm2m"]
@@ -12,6 +12,7 @@
 [ext_resource type="Script" uid="uid://2tc6d7ii5kxy" path="res://boneco_1.gd" id="10_2cqfq"]
 [ext_resource type="Texture2D" uid="uid://bndym85c0sgco" path="res://assets/images/boneco2.png" id="11_ycdy4"]
 [ext_resource type="Script" uid="uid://cxd2jlr4sfko6" path="res://boneco_2.gd" id="12_074og"]
+[ext_resource type="Texture2D" uid="uid://dv7jr3v224e5a" path="res://assets/images/pluraridade.png" id="14_vivmo"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1bvp3"]
 particles_animation = true
@@ -34,7 +35,7 @@ initial_velocity_min = 5.0
 initial_velocity_max = 15.0
 angular_velocity_min = -1.60933e-05
 angular_velocity_max = 50.0
-gravity = Vector3(0, 10, 0)
+gravity = Vector3(0, 98, 0)
 scale_min = 0.1
 scale_max = 0.3
 color_ramp = SubResource("GradientTexture1D_7mycd")
@@ -161,3 +162,13 @@ script = ExtResource("12_074og")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pagina1Container/Boneco2"]
 position = Vector2(7.7653, 14.7935)
 shape = SubResource("RectangleShape2D_ycdy4")
+
+[node name="Pluralidade" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 263.0
+offset_top = 787.0
+offset_right = 763.0
+offset_bottom = 1287.0
+scale = Vector2(0.524, 0.222)
+texture_normal = ExtResource("14_vivmo")
+stretch_mode = 5

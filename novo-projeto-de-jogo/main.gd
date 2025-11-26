@@ -1,4 +1,4 @@
-extends Control
+extends Control 
 
 # ===============================
 # VARIÁVEIS GLOBAIS
@@ -9,8 +9,13 @@ var indice = 0
 var som_ligado = true
 var video_tocando = false
 
+# ZOOM (somente página 3)
+var zoom_atual = 1.0
+var zoom_min = 1.0
+var zoom_max = 3.0
+
 # ===============================
-# NODES
+# NODES PRINCIPAIS
 # ===============================
 @onready var imagem = $Imagem
 @onready var btn_anterior = $BtnAnterior
@@ -18,28 +23,31 @@ var video_tocando = false
 @onready var audio_player = $AudioStreamPlayer
 @onready var btn_audio = $BtnAudio
 
-# Video
+# Vídeo
 @onready var video = $VideoPlayer
 @onready var btn_video_toggle = $VideoPlayer/BtnToggle
 
-# Partículas na página 3
+# Partículas página 3
 @onready var particulas = $Particulas3
 
-# Container do acelerômetro na página 6
+# Pluralidade (página 3)
+@onready var pluralidade = $Pluralidade
+
+# Container acelerômetro página 6
 @onready var acelerometro_container = $AcelerometroContainer
 
-# Container da página 1 (nuvens, bonecos etc)
+# Container página 1
 @onready var pagina1_container = $Pagina1Container
 
 # ===============================
-# CORES DOS BOTÕES LARANJA
+# CORES BOTÕES
 # ===============================
 const COR_PADRAO = Color("#f26423")
 const COR_HOVER = Color("#e0541b")
 const COR_PRESSIONADO = Color("#c34716")
 
 # ===============================
-# FUNÇÃO READY
+# READY
 # ===============================
 func _ready():
 	_carregar_recursos()
@@ -61,6 +69,7 @@ func _carregar_recursos():
 		preload("res://assets/images/pagina6.png"),
 		preload("res://assets/images/contracapa.png")
 	]
+
 	audios = [
 		preload("res://assets/audios/capa.ogg"),
 		preload("res://assets/audios/pagina1.ogg"),
@@ -80,6 +89,7 @@ func _configurar_video():
 	video.paused = true
 	video.visible = false
 	video_tocando = false
+
 	btn_video_toggle.visible = false
 	btn_video_toggle.text = "Play"
 	btn_video_toggle.pressed.connect(_video_toggle)
@@ -95,10 +105,11 @@ func _conectar_botoes():
 
 	_configurar_estilo_botao(btn_anterior)
 	_configurar_estilo_botao(btn_proximo)
+
 	btn_audio.texture_normal = preload("res://assets/icons/audio_on.png")
 
 # ===============================
-# CONFIGURAR ESTILO BOTÕES
+# ESTILO BOTÃO
 # ===============================
 func _configurar_estilo_botao(botao):
 	botao.remove_theme_stylebox_override("normal")
@@ -120,6 +131,7 @@ func _configurar_estilo_botao(botao):
 	botao.add_theme_stylebox_override("normal", estilo_normal)
 	botao.add_theme_stylebox_override("hover", estilo_hover)
 	botao.add_theme_stylebox_override("pressed", estilo_pressed)
+
 	botao.add_theme_color_override("font_color", Color.WHITE)
 	botao.add_theme_font_size_override("font_size", 24)
 
@@ -127,20 +139,28 @@ func _configurar_estilo_botao(botao):
 # ATUALIZAR PÁGINA
 # ===============================
 func atualizar_pagina():
-	# Atualizar imagem
 	imagem.texture = paginas[indice]
 	imagem.expand = true
 	imagem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 
-	# Mostrar container da página 1
+	# Página 1
 	pagina1_container.visible = indice == 1
 
-	# Botões anterior/proximo
+	# Somente página 3 mostra a pluralidade
+	pluralidade.visible = (indice == 3)
+
+	# Reset da pluralidade na página 3
+	if indice == 3:
+		zoom_atual = 1.0
+		pluralidade.scale = Vector2(1, 1)
+		pluralidade.position = Vector2(0, 0)
+
+	# Botões navegação
 	btn_anterior.visible = indice != 0
 	btn_anterior.text = "Página anterior"
 	btn_proximo.text = "Voltar ao início" if indice == paginas.size() - 1 else "Próxima página"
 
-	# Reset vídeo se não for página 5
+	# Vídeo página 5
 	if indice != 5:
 		video.stop()
 		video.paused = true
@@ -154,17 +174,15 @@ func atualizar_pagina():
 		video.paused = true
 		video_tocando = false
 
-	# Partículas na página 3
+	# Partículas página 3
+	particulas.visible = (indice == 3)
 	if indice == 3:
-		particulas.visible = true
 		particulas.restart()
-	else:
-		particulas.visible = false
 
-	# Acelerômetro na página 6
-	acelerometro_container.visible = indice == 6
+	# Acelerômetro página 6
+	acelerometro_container.visible = (indice == 6)
 
-	# Áudio automático
+	# Áudio
 	if som_ligado:
 		audio_player.stream = audios[indice]
 		audio_player.play()
@@ -195,7 +213,7 @@ func _alternar_audio():
 		audio_player.stop()
 
 # ===============================
-# BOTÃO VIDEO PLAY/PAUSE
+# PLAY / PAUSE VÍDEO
 # ===============================
 func _video_toggle():
 	if video_tocando:
@@ -209,3 +227,19 @@ func _video_toggle():
 		video_tocando = true
 		btn_video_toggle.text = "Pausa"
 		audio_player.stop()
+
+# ===============================
+# INPUT — ZOOM E ARRASTAR SÓ A PLURALIDADE (PÁGINA 3)
+# ===============================
+func _input(event):
+	if indice != 3:
+		return
+
+	# Zoom (pinça) — só o PNG pluralidade
+	if event is InputEventMagnifyGesture:
+		zoom_atual = clamp(zoom_atual * event.factor, zoom_min, zoom_max)
+		pluralidade.scale = Vector2(zoom_atual, zoom_atual)
+
+	# Arrastar — só a pluralidade
+	if event is InputEventScreenDrag:
+		pluralidade.position += event.relative
