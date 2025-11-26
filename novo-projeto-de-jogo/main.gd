@@ -19,6 +19,9 @@ var video_tocando = false
 # Partículas na página 3
 @onready var particulas = $Particulas3
 
+# Container do acelerômetro na página 6
+@onready var acelerometro_container = $AcelerometroContainer
+
 # Cores dos botões laranja
 const COR_PADRAO = Color("#f26423")
 const COR_HOVER = Color("#e0541b")
@@ -51,16 +54,14 @@ func _ready():
 	]
 
 	# Configurar VideoStreamPlayer
-	video.stream = preload("res://assets/videos/video.ogv") # ajuste para seu vídeo
+	video.stream = preload("res://assets/videos/video.ogv")
 	video.paused = true
 	video.visible = false
 	video_tocando = false
 
-	# Botão Play/Pause
 	btn_video_toggle.visible = false
 	btn_video_toggle.text = "Play"
 	btn_video_toggle.pressed.connect(_video_toggle)
-	# Aplicar estilo laranja igual aos botões de navegação
 	_configurar_estilo_botao(btn_video_toggle)
 
 	# Conectar botões
@@ -68,7 +69,7 @@ func _ready():
 	btn_proximo.pressed.connect(_avancar)
 	btn_audio.pressed.connect(_alternar_audio)
 
-	# Estilo laranja
+	# Aplicar estilo laranja
 	_configurar_estilo_botao(btn_anterior)
 	_configurar_estilo_botao(btn_proximo)
 
@@ -116,7 +117,7 @@ func atualizar_pagina():
 	# Botões anterior/proximo
 	btn_anterior.visible = indice != 0
 	btn_anterior.text = "Página anterior"
-	
+
 	if indice == paginas.size() - 1:
 		btn_proximo.text = "Voltar ao início"
 	else:
@@ -142,6 +143,12 @@ func atualizar_pagina():
 		particulas.restart()
 	else:
 		particulas.visible = false
+
+	# Mostrar acelerômetro somente na página 6
+	if indice == 6:
+		acelerometro_container.visible = true
+	else:
+		acelerometro_container.visible = false
 
 	# Áudio automático
 	if indice != 5:

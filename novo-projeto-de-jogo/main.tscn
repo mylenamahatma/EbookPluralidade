@@ -1,8 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://d2cxb7y7ask01"]
+[gd_scene load_steps=10 format=3 uid="uid://d2cxb7y7ask01"]
 
 [ext_resource type="Script" uid="uid://dtd0rkkhueltw" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="VideoStream" uid="uid://dphga8xuveamg" path="res://assets/videos/video.ogv" id="2_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://bn405t1sfli1" path="res://assets/images/confete.png" id="3_h2yge"]
+[ext_resource type="Texture2D" uid="uid://daqxwiujqiq5r" path="res://assets/images/arcoiris.png" id="5_7mycd"]
+[ext_resource type="Script" uid="uid://cd6be0g3cpr2s" path="res://sprite_acelerometro.gd" id="5_lquwl"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1bvp3"]
 particles_animation = true
@@ -103,3 +105,11 @@ amount = 100
 texture = ExtResource("3_h2yge")
 visibility_rect = Rect2(-2000, -200, 4000, 600)
 process_material = SubResource("ParticleProcessMaterial_272bh")
+
+[node name="AcelerometroContainer" type="Node2D" parent="."]
+
+[node name="SpriteAcelerometro" type="Sprite2D" parent="AcelerometroContainer"]
+position = Vector2(384, 618)
+scale = Vector2(0.722, 0.6)
+texture = ExtResource("5_7mycd")
+script = ExtResource("5_lquwl")
