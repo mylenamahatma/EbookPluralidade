@@ -4,21 +4,26 @@ var paginas = []
 var audios = []
 var indice = 0
 var som_ligado = true
+var video_tocando = false
 
-@onready var imagem = $imagem
+@onready var imagem = $Imagem
 @onready var btn_anterior = $BtnAnterior
 @onready var btn_proximo = $BtnProximo
-
 @onready var audio_player = $AudioStreamPlayer
-@onready var btn_audio = $BtnAudio   # TextureButton
+@onready var btn_audio = $BtnAudio
 
-# Paleta dos botões laranja
+# Video
+@onready var video = $VideoPlayer
+@onready var btn_video_toggle = $VideoPlayer/BtnToggle
+
+# Cores dos botões laranja
 const COR_PADRAO = Color("#f26423")
 const COR_HOVER = Color("#e0541b")
 const COR_PRESSIONADO = Color("#c34716")
 
+
 func _ready():
-	# IMAGENS DAS PÁGINAS
+	# Carregar imagens
 	paginas = [
 		preload("res://assets/images/capa.png"),
 		preload("res://assets/images/pagina1.png"),
@@ -30,7 +35,7 @@ func _ready():
 		preload("res://assets/images/contracapa.png")
 	]
 
-	# ÁUDIOS — MESMO NOME DAS IMAGENS
+	# Carregar áudios
 	audios = [
 		preload("res://assets/audios/capa.ogg"),
 		preload("res://assets/audios/pagina1.ogg"),
@@ -42,22 +47,36 @@ func _ready():
 		preload("res://assets/audios/contracapa.ogg")
 	]
 
-	# Conectar botões
-	btn_anterior.connect("pressed", Callable(self, "_voltar"))
-	btn_proximo.connect("pressed", Callable(self, "_avancar"))
-	btn_audio.connect("pressed", Callable(self, "_alternar_audio"))
+	# Configurar VideoStreamPlayer
+	video.stream = preload("res://assets/videos/video.ogv") # ajuste para o seu vídeo
+	video.paused = true
+	video.visible = false
+	video_tocando = false
 
-	# Aplicar estilo laranja
+	# Botão Play/Pause
+	btn_video_toggle.visible = false
+	btn_video_toggle.text = "Play"
+	btn_video_toggle.pressed.connect(_video_toggle)
+	# Aplicar estilo laranja igual aos botões de navegação
+	_configurar_estilo_botao(btn_video_toggle)
+
+	# Conectar botões
+	btn_anterior.pressed.connect(_voltar)
+	btn_proximo.pressed.connect(_avancar)
+	btn_audio.pressed.connect(_alternar_audio)
+
+	# Estilo laranja
 	_configurar_estilo_botao(btn_anterior)
 	_configurar_estilo_botao(btn_proximo)
 
-	# Ícone inicial do botão de som
 	btn_audio.texture_normal = preload("res://assets/icons/audio_on.png")
 
 	atualizar_pagina()
 
 
-# CONFIGURAÇÃO DE ESTILO DOS BOTÕES
+# ===============================
+# CONFIGURAR BOTÕES LARANJA
+# ===============================
 func _configurar_estilo_botao(botao):
 	botao.remove_theme_stylebox_override("normal")
 	botao.remove_theme_stylebox_override("hover")
@@ -83,54 +102,90 @@ func _configurar_estilo_botao(botao):
 	botao.add_theme_font_size_override("font_size", 24)
 
 
+# ===============================
 # ATUALIZAR PÁGINA
+# ===============================
 func atualizar_pagina():
-	# Troca a imagem
 	imagem.texture = paginas[indice]
 	imagem.expand = true
 	imagem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 
-	# Mostrar / esconder botão anterior
+	# Botões anterior/proximo
 	btn_anterior.visible = indice != 0
 	btn_anterior.text = "Página anterior"
-
-	# Texto do botão próximo
+	
 	if indice == paginas.size() - 1:
 		btn_proximo.text = "Voltar ao início"
 	else:
 		btn_proximo.text = "Próxima página"
 
-	# Áudio automático
-	audio_player.stop()
-
-	if som_ligado:
-		audio_player.stream = audios[indice]
-		audio_player.play()
-
-
-# AVANÇAR PÁGINA
-func _avancar():
-	if indice < paginas.size() - 1:
-		indice += 1
+	# Reset vídeo se não for página 5
+	if indice != 5:
+		video.stop()
+		video.paused = true
+		video.visible = false
+		btn_video_toggle.visible = false
+		video_tocando = false
 	else:
-		indice = 0
+		video.visible = true
+		btn_video_toggle.visible = true
+		btn_video_toggle.text = "Play"
+		video.paused = true
+		video_tocando = false
+
+	# Áudio automático
+	if indice != 5:
+		if som_ligado:
+			audio_player.stream = audios[indice]
+			audio_player.play()
+	else:
+		if som_ligado:
+			audio_player.stream = audios[indice]
+			audio_player.play()
+
+
+# ===============================
+# NAVEGAÇÃO
+# ===============================
+func _avancar():
+	indice = (indice + 1) % paginas.size()
 	atualizar_pagina()
 
 
-# VOLTAR PÁGINA
 func _voltar():
 	indice = max(0, indice - 1)
 	atualizar_pagina()
 
 
-# BOTÃO DE SOM ON/OFF
+# ===============================
+# ÁUDIO ON/OFF
+# ===============================
 func _alternar_audio():
 	som_ligado = !som_ligado
-
 	if som_ligado:
 		btn_audio.texture_normal = preload("res://assets/icons/audio_on.png")
-		audio_player.stream = audios[indice]
-		audio_player.play()
+		if not video_tocando:
+			audio_player.stream = audios[indice]
+			audio_player.play()
 	else:
 		btn_audio.texture_normal = preload("res://assets/icons/audio_off.png")
-		audio_player.stop()    # NÃO VOLTA DE PÁGINA AGORA!
+		audio_player.stop()
+
+
+# ===============================
+# BOTÃO VIDEO PLAY/PAUSE
+# ===============================
+func _video_toggle():
+	if video_tocando:
+		# Pausar vídeo mantendo posição
+		video.paused = true
+		video_tocando = false
+		btn_video_toggle.text = "Play"
+	else:
+		# Iniciar ou retomar vídeo
+		if not video.is_playing():
+			video.play()
+		video.paused = false
+		video_tocando = true
+		btn_video_toggle.text = "Pausa"
+		audio_player.stop()  # parar narração
