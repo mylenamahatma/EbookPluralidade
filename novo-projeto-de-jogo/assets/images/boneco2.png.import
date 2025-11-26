@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://i8quqy0mf8x"
-path="res://.godot/imported/pagina1.png-a97276500056e1e80ba5e74d05efbf1d.ctex"
+uid="uid://bndym85c0sgco"
+path="res://.godot/imported/boneco2.png-72f97d928ec3e132030deb0708f1d4df.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pagina1.png"
-dest_files=["res://.godot/imported/pagina1.png-a97276500056e1e80ba5e74d05efbf1d.ctex"]
+source_file="res://assets/images/boneco2.png"
+dest_files=["res://.godot/imported/boneco2.png-72f97d928ec3e132030deb0708f1d4df.ctex"]
 
 [params]
 

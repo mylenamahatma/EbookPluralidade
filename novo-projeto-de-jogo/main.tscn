@@ -1,10 +1,17 @@
-[gd_scene load_steps=10 format=3 uid="uid://d2cxb7y7ask01"]
+[gd_scene load_steps=19 format=3 uid="uid://d2cxb7y7ask01"]
 
 [ext_resource type="Script" uid="uid://dtd0rkkhueltw" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="VideoStream" uid="uid://dphga8xuveamg" path="res://assets/videos/video.ogv" id="2_0xm2m"]
 [ext_resource type="Texture2D" uid="uid://bn405t1sfli1" path="res://assets/images/confete.png" id="3_h2yge"]
 [ext_resource type="Texture2D" uid="uid://daqxwiujqiq5r" path="res://assets/images/arcoiris.png" id="5_7mycd"]
 [ext_resource type="Script" uid="uid://cd6be0g3cpr2s" path="res://sprite_acelerometro.gd" id="5_lquwl"]
+[ext_resource type="Texture2D" uid="uid://cwpnjropc4vw1" path="res://assets/images/nuvem.png" id="6_dg77c"]
+[ext_resource type="Script" uid="uid://g5tkr451uyjl" path="res://nuvem_1.gd" id="7_ycdy4"]
+[ext_resource type="Script" uid="uid://dl71yp4ye4xj4" path="res://nuvem_2.gd" id="8_w48qg"]
+[ext_resource type="Texture2D" uid="uid://c5fda0j5allf6" path="res://assets/images/boneco1.png" id="9_dg77c"]
+[ext_resource type="Script" uid="uid://2tc6d7ii5kxy" path="res://boneco_1.gd" id="10_2cqfq"]
+[ext_resource type="Texture2D" uid="uid://bndym85c0sgco" path="res://assets/images/boneco2.png" id="11_ycdy4"]
+[ext_resource type="Script" uid="uid://cxd2jlr4sfko6" path="res://boneco_2.gd" id="12_074og"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1bvp3"]
 particles_animation = true
@@ -34,6 +41,12 @@ color_ramp = SubResource("GradientTexture1D_7mycd")
 anim_offset_min = 0.5
 anim_offset_max = 1.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_dg77c"]
+size = Vector2(280.835, 518.603)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ycdy4"]
+size = Vector2(339.948, 514.793)
+
 [node name="Main" type="Control"]
 layout_mode = 3
 anchors_preset = 15
@@ -49,10 +62,10 @@ follow_viewport_enabled = true
 
 [node name="Imagem" type="TextureRect" parent="."]
 layout_mode = 0
-offset_left = 13.0
-offset_top = -4.0
-offset_right = 771.0
-offset_bottom = 1013.0
+offset_left = -3.0
+offset_top = 5.0
+offset_right = 764.0
+offset_bottom = 1022.0
 stretch_mode = 6
 
 [node name="BtnAnterior" type="Button" parent="."]
@@ -83,10 +96,10 @@ offset_bottom = 44.0
 [node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
 layout_direction = 1
 layout_mode = 0
-offset_left = 89.0
-offset_top = 451.0
-offset_right = 682.0
-offset_bottom = 727.0
+offset_left = 84.0
+offset_top = 442.0
+offset_right = 677.0
+offset_bottom = 718.0
 localize_numeral_system = false
 stream = ExtResource("2_0xm2m")
 expand = true
@@ -113,3 +126,38 @@ position = Vector2(384, 618)
 scale = Vector2(0.722, 0.6)
 texture = ExtResource("5_7mycd")
 script = ExtResource("5_lquwl")
+
+[node name="Pagina1Container" type="Node2D" parent="."]
+
+[node name="Nuvem1" type="Sprite2D" parent="Pagina1Container" groups=["nuvens"]]
+position = Vector2(548, 507)
+scale = Vector2(2.20312, 1.83594)
+texture = ExtResource("6_dg77c")
+script = ExtResource("7_ycdy4")
+
+[node name="Nuvem2" type="Sprite2D" parent="Pagina1Container" groups=["nuvens"]]
+position = Vector2(246, 501)
+scale = Vector2(2.89063, 2.03125)
+texture = ExtResource("6_dg77c")
+script = ExtResource("8_w48qg")
+
+[node name="Boneco1" type="Sprite2D" parent="Pagina1Container"]
+position = Vector2(676, 804)
+scale = Vector2(0.509196, 0.499418)
+texture = ExtResource("9_dg77c")
+script = ExtResource("10_2cqfq")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pagina1Container/Boneco1"]
+position = Vector2(-36.3318, -15.0177)
+scale = Vector2(1, 1)
+shape = SubResource("RectangleShape2D_dg77c")
+
+[node name="Boneco2" type="Sprite2D" parent="Pagina1Container"]
+position = Vector2(101, 791)
+scale = Vector2(0.5795, 0.507)
+texture = ExtResource("11_ycdy4")
+script = ExtResource("12_074og")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Pagina1Container/Boneco2"]
+position = Vector2(7.7653, 14.7935)
+shape = SubResource("RectangleShape2D_ycdy4")

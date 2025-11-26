@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://i8quqy0mf8x"
-path="res://.godot/imported/pagina1.png-a97276500056e1e80ba5e74d05efbf1d.ctex"
+uid="uid://cwpnjropc4vw1"
+path="res://.godot/imported/nuvem.png-e96cfdc37675e1a52902d3e5603e9b32.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pagina1.png"
-dest_files=["res://.godot/imported/pagina1.png-a97276500056e1e80ba5e74d05efbf1d.ctex"]
+source_file="res://assets/images/nuvem.png"
+dest_files=["res://.godot/imported/nuvem.png-e96cfdc37675e1a52902d3e5603e9b32.ctex"]
 
 [params]
 

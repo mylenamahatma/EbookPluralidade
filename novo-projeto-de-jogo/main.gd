@@ -1,11 +1,17 @@
 extends Control
 
+# ===============================
+# VARIÁVEIS GLOBAIS
+# ===============================
 var paginas = []
 var audios = []
 var indice = 0
 var som_ligado = true
 var video_tocando = false
 
+# ===============================
+# NODES
+# ===============================
 @onready var imagem = $Imagem
 @onready var btn_anterior = $BtnAnterior
 @onready var btn_proximo = $BtnProximo
@@ -22,14 +28,29 @@ var video_tocando = false
 # Container do acelerômetro na página 6
 @onready var acelerometro_container = $AcelerometroContainer
 
-# Cores dos botões laranja
+# Container da página 1 (nuvens, bonecos etc)
+@onready var pagina1_container = $Pagina1Container
+
+# ===============================
+# CORES DOS BOTÕES LARANJA
+# ===============================
 const COR_PADRAO = Color("#f26423")
 const COR_HOVER = Color("#e0541b")
 const COR_PRESSIONADO = Color("#c34716")
 
-
+# ===============================
+# FUNÇÃO READY
+# ===============================
 func _ready():
-	# Carregar imagens
+	_carregar_recursos()
+	_configurar_video()
+	_conectar_botoes()
+	atualizar_pagina()
+
+# ===============================
+# CARREGAR IMAGENS E ÁUDIOS
+# ===============================
+func _carregar_recursos():
 	paginas = [
 		preload("res://assets/images/capa.png"),
 		preload("res://assets/images/pagina1.png"),
@@ -40,8 +61,6 @@ func _ready():
 		preload("res://assets/images/pagina6.png"),
 		preload("res://assets/images/contracapa.png")
 	]
-
-	# Carregar áudios
 	audios = [
 		preload("res://assets/audios/capa.ogg"),
 		preload("res://assets/audios/pagina1.ogg"),
@@ -53,33 +72,33 @@ func _ready():
 		preload("res://assets/audios/contracapa.ogg")
 	]
 
-	# Configurar VideoStreamPlayer
+# ===============================
+# CONFIGURAR VÍDEO
+# ===============================
+func _configurar_video():
 	video.stream = preload("res://assets/videos/video.ogv")
 	video.paused = true
 	video.visible = false
 	video_tocando = false
-
 	btn_video_toggle.visible = false
 	btn_video_toggle.text = "Play"
 	btn_video_toggle.pressed.connect(_video_toggle)
 	_configurar_estilo_botao(btn_video_toggle)
 
-	# Conectar botões
+# ===============================
+# CONECTAR BOTÕES
+# ===============================
+func _conectar_botoes():
 	btn_anterior.pressed.connect(_voltar)
 	btn_proximo.pressed.connect(_avancar)
 	btn_audio.pressed.connect(_alternar_audio)
 
-	# Aplicar estilo laranja
 	_configurar_estilo_botao(btn_anterior)
 	_configurar_estilo_botao(btn_proximo)
-
 	btn_audio.texture_normal = preload("res://assets/icons/audio_on.png")
 
-	atualizar_pagina()
-
-
 # ===============================
-# CONFIGURAR BOTÕES LARANJA
+# CONFIGURAR ESTILO BOTÕES
 # ===============================
 func _configurar_estilo_botao(botao):
 	botao.remove_theme_stylebox_override("normal")
@@ -101,27 +120,25 @@ func _configurar_estilo_botao(botao):
 	botao.add_theme_stylebox_override("normal", estilo_normal)
 	botao.add_theme_stylebox_override("hover", estilo_hover)
 	botao.add_theme_stylebox_override("pressed", estilo_pressed)
-
 	botao.add_theme_color_override("font_color", Color.WHITE)
 	botao.add_theme_font_size_override("font_size", 24)
-
 
 # ===============================
 # ATUALIZAR PÁGINA
 # ===============================
 func atualizar_pagina():
+	# Atualizar imagem
 	imagem.texture = paginas[indice]
 	imagem.expand = true
 	imagem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 
+	# Mostrar container da página 1
+	pagina1_container.visible = indice == 1
+
 	# Botões anterior/proximo
 	btn_anterior.visible = indice != 0
 	btn_anterior.text = "Página anterior"
-
-	if indice == paginas.size() - 1:
-		btn_proximo.text = "Voltar ao início"
-	else:
-		btn_proximo.text = "Próxima página"
+	btn_proximo.text = "Voltar ao início" if indice == paginas.size() - 1 else "Próxima página"
 
 	# Reset vídeo se não for página 5
 	if indice != 5:
@@ -137,29 +154,20 @@ func atualizar_pagina():
 		video.paused = true
 		video_tocando = false
 
-	# Mostrar partículas somente na página 3
+	# Partículas na página 3
 	if indice == 3:
 		particulas.visible = true
 		particulas.restart()
 	else:
 		particulas.visible = false
 
-	# Mostrar acelerômetro somente na página 6
-	if indice == 6:
-		acelerometro_container.visible = true
-	else:
-		acelerometro_container.visible = false
+	# Acelerômetro na página 6
+	acelerometro_container.visible = indice == 6
 
 	# Áudio automático
-	if indice != 5:
-		if som_ligado:
-			audio_player.stream = audios[indice]
-			audio_player.play()
-	else:
-		if som_ligado:
-			audio_player.stream = audios[indice]
-			audio_player.play()
-
+	if som_ligado:
+		audio_player.stream = audios[indice]
+		audio_player.play()
 
 # ===============================
 # NAVEGAÇÃO
@@ -168,11 +176,9 @@ func _avancar():
 	indice = (indice + 1) % paginas.size()
 	atualizar_pagina()
 
-
 func _voltar():
 	indice = max(0, indice - 1)
 	atualizar_pagina()
-
 
 # ===============================
 # ÁUDIO ON/OFF
@@ -188,7 +194,6 @@ func _alternar_audio():
 		btn_audio.texture_normal = preload("res://assets/icons/audio_off.png")
 		audio_player.stop()
 
-
 # ===============================
 # BOTÃO VIDEO PLAY/PAUSE
 # ===============================
@@ -203,4 +208,4 @@ func _video_toggle():
 		video.paused = false
 		video_tocando = true
 		btn_video_toggle.text = "Pausa"
-		audio_player.stop()  # parar narração
+		audio_player.stop()

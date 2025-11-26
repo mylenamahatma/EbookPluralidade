@@ -1,6 +1,6 @@
 extends Sprite2D
 
-var sensitivity := 2.0
+var sensitivity := 0.5
 
 func _process(delta):
 	# Verifica se a função existe
