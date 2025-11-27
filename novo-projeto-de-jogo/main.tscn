@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=3 uid="uid://d2cxb7y7ask01"]
+[gd_scene load_steps=35 format=3 uid="uid://d2cxb7y7ask01"]
 
 [ext_resource type="Script" uid="uid://dtd0rkkhueltw" path="res://main.gd" id="1_ig7tw"]
 [ext_resource type="VideoStream" uid="uid://dphga8xuveamg" path="res://assets/videos/video.ogv" id="2_0xm2m"]
@@ -12,7 +12,19 @@
 [ext_resource type="Script" uid="uid://2tc6d7ii5kxy" path="res://boneco_1.gd" id="10_2cqfq"]
 [ext_resource type="Texture2D" uid="uid://bndym85c0sgco" path="res://assets/images/boneco2.png" id="11_ycdy4"]
 [ext_resource type="Script" uid="uid://cxd2jlr4sfko6" path="res://boneco_2.gd" id="12_074og"]
+[ext_resource type="Texture2D" uid="uid://ba3u0u4bpl12c" path="res://assets/images/menino1.png" id="14_0odxb"]
 [ext_resource type="Texture2D" uid="uid://dv7jr3v224e5a" path="res://assets/images/pluraridade.png" id="14_vivmo"]
+[ext_resource type="Texture2D" uid="uid://bmow5clfngwa5" path="res://assets/images/menino2.png" id="15_lswn8"]
+[ext_resource type="Texture2D" uid="uid://qw4d7gva1qcq" path="res://assets/images/menino3.png" id="16_a6jrf"]
+[ext_resource type="Texture2D" uid="uid://cgpu1yjgdsg0r" path="res://assets/images/menina1.png" id="17_xuqvo"]
+[ext_resource type="Texture2D" uid="uid://c8kxa24b8jkeg" path="res://assets/images/menina2.png" id="18_qsp4k"]
+[ext_resource type="Texture2D" uid="uid://w7ilp2sgop6y" path="res://assets/images/menina3.png" id="19_kq58d"]
+[ext_resource type="Texture2D" uid="uid://cle21ana8v1ja" path="res://assets/images/foliao1.png" id="20_seu75"]
+[ext_resource type="Texture2D" uid="uid://c7ovww6qkcjn3" path="res://assets/images/foliao2.png" id="21_htxhm"]
+[ext_resource type="Texture2D" uid="uid://bif874bvdg8xf" path="res://assets/images/foliao3.png" id="22_jq2sk"]
+[ext_resource type="Texture2D" uid="uid://b4y5wm5fqgw5r" path="res://assets/images/pandeiro.png" id="23_4k2k6"]
+[ext_resource type="Texture2D" uid="uid://dxunwe5ya4l64" path="res://assets/images/tambor.png" id="24_0rl1p"]
+[ext_resource type="Texture2D" uid="uid://bicrjho08x7vh" path="res://assets/images/ganza.png" id="25_ok6jj"]
 
 [sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_1bvp3"]
 particles_animation = true
@@ -21,7 +33,6 @@ particles_anim_v_frames = 1
 particles_anim_loop = false
 
 [sub_resource type="Gradient" id="Gradient_lquwl"]
-offsets = PackedFloat32Array(0.17284, 0.864198)
 
 [sub_resource type="GradientTexture1D" id="GradientTexture1D_7mycd"]
 gradient = SubResource("Gradient_lquwl")
@@ -47,6 +58,57 @@ size = Vector2(280.835, 518.603)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ycdy4"]
 size = Vector2(339.948, 514.793)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_facbu"]
+animations = [{
+"frames": [{
+"duration": 1.1,
+"texture": ExtResource("14_0odxb")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_lswn8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_a6jrf")
+}],
+"loop": true,
+"name": &"dance",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_b1qrp"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("17_xuqvo")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_qsp4k")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_kq58d")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_come4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("20_seu75")
+}, {
+"duration": 1.0,
+"texture": ExtResource("21_htxhm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("22_jq2sk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
 
 [node name="Main" type="Control"]
 layout_mode = 3
@@ -123,21 +185,22 @@ process_material = SubResource("ParticleProcessMaterial_272bh")
 [node name="AcelerometroContainer" type="Node2D" parent="."]
 
 [node name="SpriteAcelerometro" type="Sprite2D" parent="AcelerometroContainer"]
-position = Vector2(384, 618)
-scale = Vector2(0.722, 0.6)
+position = Vector2(397.5, 556.5)
+scale = Vector2(1.338, 0.846)
 texture = ExtResource("5_7mycd")
 script = ExtResource("5_lquwl")
 
 [node name="Pagina1Container" type="Node2D" parent="."]
+position = Vector2(3, 3)
 
 [node name="Nuvem1" type="Sprite2D" parent="Pagina1Container" groups=["nuvens"]]
-position = Vector2(548, 507)
+position = Vector2(548, 483)
 scale = Vector2(2.20312, 1.83594)
 texture = ExtResource("6_dg77c")
 script = ExtResource("7_ycdy4")
 
 [node name="Nuvem2" type="Sprite2D" parent="Pagina1Container" groups=["nuvens"]]
-position = Vector2(246, 501)
+position = Vector2(241, 474)
 scale = Vector2(2.89063, 2.03125)
 texture = ExtResource("6_dg77c")
 script = ExtResource("8_w48qg")
@@ -164,11 +227,65 @@ position = Vector2(7.7653, 14.7935)
 shape = SubResource("RectangleShape2D_ycdy4")
 
 [node name="Pluralidade" type="TextureButton" parent="."]
-layout_mode = 0
-offset_left = 263.0
-offset_top = 787.0
-offset_right = 763.0
-offset_bottom = 1287.0
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 214.0
+offset_top = 184.0
+offset_right = 214.0
+offset_bottom = 684.0
+grow_horizontal = 2
+grow_vertical = 2
 scale = Vector2(0.524, 0.222)
 texture_normal = ExtResource("14_vivmo")
 stretch_mode = 5
+
+[node name="Menino" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(392, 883)
+scale = Vector2(0.219238, 0.161458)
+sprite_frames = SubResource("SpriteFrames_facbu")
+animation = &"dance"
+frame_progress = 0.0112143
+
+[node name="Menina" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(156, 835)
+scale = Vector2(0.21875, 0.198242)
+sprite_frames = SubResource("SpriteFrames_b1qrp")
+frame_progress = 0.93012
+
+[node name="Foliao" type="AnimatedSprite2D" parent="."]
+visible = false
+position = Vector2(622, 818)
+scale = Vector2(0.227539, 0.197917)
+sprite_frames = SubResource("SpriteFrames_come4")
+frame_progress = 0.00441047
+
+[node name="BtnPandeiro" type="TextureButton" parent="."]
+physics_interpolation_mode = 0
+layout_mode = 0
+offset_left = 312.0
+offset_top = 556.0
+offset_right = 470.0
+offset_bottom = 751.0
+texture_normal = ExtResource("23_4k2k6")
+stretch_mode = 0
+
+[node name="BtnTambor" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 11.0
+offset_top = 570.0
+offset_right = 147.0
+offset_bottom = 771.0
+texture_normal = ExtResource("24_0rl1p")
+
+[node name="BtnGanza" type="TextureButton" parent="."]
+layout_mode = 0
+offset_left = 579.0
+offset_top = 525.0
+offset_right = 709.0
+offset_bottom = 720.0
+texture_normal = ExtResource("25_ok6jj")

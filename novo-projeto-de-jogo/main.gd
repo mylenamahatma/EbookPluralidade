@@ -40,6 +40,26 @@ var zoom_max = 3.0
 @onready var pagina1_container = $Pagina1Container
 
 # ===============================
+# BONECOS DANÇANDO (PÁGINA 2)
+# ===============================
+@onready var menino = $Menino
+@onready var menina = $Menina
+@onready var foliao = $Foliao
+
+# ===============================
+# INSTRUMENTOS (TEXTUREBUTTON)
+# ===============================
+@onready var btn_pandeiro = $BtnPandeiro
+@onready var btn_tambor = $BtnTambor
+@onready var btn_ganza = $BtnGanza
+
+# Áudios dos instrumentos
+var audio_pandeiro = preload("res://assets/audios/pandeiro.ogg")
+var audio_tambor = preload("res://assets/audios/tambor.ogg")
+var audio_ganza = preload("res://assets/audios/ganza.ogg")
+var audio_instrumento = AudioStreamPlayer.new() # player separado para instrumentos
+
+# ===============================
 # CORES BOTÕES
 # ===============================
 const COR_PADRAO = Color("#f26423")
@@ -54,6 +74,19 @@ func _ready():
 	_configurar_video()
 	_conectar_botoes()
 	atualizar_pagina()
+
+	# Adiciona player de instrumento
+	add_child(audio_instrumento)
+
+	# Configura animações dos bonecos (Página 2)
+	setup_boneco(menino, ["res://assets/images/menino1.png","res://assets/images/menino2.png","res://assets/images/menino3.png"])
+	setup_boneco(menina, ["res://assets/images/menina1.png","res://assets/images/menina2.png","res://assets/images/menina3.png"])
+	setup_boneco(foliao, ["res://assets/images/foliao1.png","res://assets/images/foliao2.png","res://assets/images/foliao3.png"])
+
+	# Conecta botões dos instrumentos
+	btn_pandeiro.pressed.connect(_toca_pandeiro)
+	btn_tambor.pressed.connect(_toca_tambor)
+	btn_ganza.pressed.connect(_toca_ganza)
 
 # ===============================
 # CARREGAR IMAGENS E ÁUDIOS
@@ -144,7 +177,7 @@ func atualizar_pagina():
 	imagem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 
 	# Página 1
-	pagina1_container.visible = indice == 1
+	pagina1_container.visible = (indice == 1)
 
 	# Somente página 3 mostra a pluralidade
 	pluralidade.visible = (indice == 3)
@@ -182,10 +215,24 @@ func atualizar_pagina():
 	# Acelerômetro página 6
 	acelerometro_container.visible = (indice == 6)
 
-	# Áudio
+	# Áudio principal
 	if som_ligado:
 		audio_player.stream = audios[indice]
 		audio_player.play()
+
+	# === Página 2: bonecos e instrumentos ===
+	var pagina2_ativa = (indice == 2)
+	menino.visible = pagina2_ativa
+	menina.visible = pagina2_ativa
+	foliao.visible = pagina2_ativa
+	btn_pandeiro.visible = pagina2_ativa
+	btn_tambor.visible = pagina2_ativa
+	btn_ganza.visible = pagina2_ativa
+
+	if pagina2_ativa:
+		menino.play("danca")
+		menina.play("danca")
+		foliao.play("danca")
 
 # ===============================
 # NAVEGAÇÃO
@@ -235,11 +282,35 @@ func _input(event):
 	if indice != 3:
 		return
 
-	# Zoom (pinça) — só o PNG pluralidade
 	if event is InputEventMagnifyGesture:
 		zoom_atual = clamp(zoom_atual * event.factor, zoom_min, zoom_max)
 		pluralidade.scale = Vector2(zoom_atual, zoom_atual)
 
-	# Arrastar — só a pluralidade
 	if event is InputEventScreenDrag:
 		pluralidade.position += event.relative
+
+# ===============================
+# FUNÇÕES BONECOS E INSTRUMENTOS
+# ===============================
+func setup_boneco(boneco: AnimatedSprite2D, imagens):
+	var frames = SpriteFrames.new()
+	frames.add_animation("danca")
+	for i in range(imagens.size()):
+		frames.add_frame("danca", load(imagens[i]))
+	
+	frames.set_animation_speed("danca", 5.0)  # Godot 4
+	boneco.frames = frames
+	boneco.animation = "danca"
+	boneco.play()
+
+func _toca_pandeiro():
+	audio_instrumento.stream = audio_pandeiro
+	audio_instrumento.play()
+
+func _toca_tambor():
+	audio_instrumento.stream = audio_tambor
+	audio_instrumento.play()
+
+func _toca_ganza():
+	audio_instrumento.stream = audio_ganza
+	audio_instrumento.play()

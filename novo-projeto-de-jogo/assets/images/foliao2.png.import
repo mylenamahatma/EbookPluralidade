@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctm50rkwaus02"
-path="res://.godot/imported/pagina3.png-5e1932685f4de5e12f583ad843d47544.ctex"
+uid="uid://c7ovww6qkcjn3"
+path="res://.godot/imported/foliao2.png-b425ab93e866cce7facd18d0ca527275.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pagina3.png"
-dest_files=["res://.godot/imported/pagina3.png-5e1932685f4de5e12f583ad843d47544.ctex"]
+source_file="res://assets/images/foliao2.png"
+dest_files=["res://.godot/imported/foliao2.png-b425ab93e866cce7facd18d0ca527275.ctex"]
 
 [params]
 

@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://ctm50rkwaus02"
-path="res://.godot/imported/pagina3.png-5e1932685f4de5e12f583ad843d47544.ctex"
+uid="uid://c8kxa24b8jkeg"
+path="res://.godot/imported/menina2.png-2517d0efacb70959e76c5ef2fdb8cf3b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/pagina3.png"
-dest_files=["res://.godot/imported/pagina3.png-5e1932685f4de5e12f583ad843d47544.ctex"]
+source_file="res://assets/images/menina2.png"
+dest_files=["res://.godot/imported/menina2.png-2517d0efacb70959e76c5ef2fdb8cf3b.ctex"]
 
 [params]
 
