@@ -1,4 +1,4 @@
-extends Control 
+extends Control  
 
 # ===============================
 # VARIÁVEIS GLOBAIS
@@ -9,7 +9,7 @@ var indice = 0
 var som_ligado = true
 var video_tocando = false
 
-# ZOOM (somente página 3)
+# ZOOM (somente página 3 e 4)
 var zoom_atual = 1.0
 var zoom_min = 1.0
 var zoom_max = 3.0
@@ -27,10 +27,10 @@ var zoom_max = 3.0
 @onready var video = $VideoPlayer
 @onready var btn_video_toggle = $VideoPlayer/BtnToggle
 
-# Partículas página 3
+# Partículas página 3 e 4
 @onready var particulas = $Particulas3
 
-# Pluralidade (página 3)
+# Pluralidade (zoom página 3 e 4)
 @onready var pluralidade = $Pluralidade
 
 # Container acelerômetro página 6
@@ -47,17 +47,16 @@ var zoom_max = 3.0
 @onready var foliao = $Foliao
 
 # ===============================
-# INSTRUMENTOS (TEXTUREBUTTON)
+# INSTRUMENTOS
 # ===============================
 @onready var btn_pandeiro = $BtnPandeiro
 @onready var btn_tambor = $BtnTambor
 @onready var btn_ganza = $BtnGanza
 
-# Áudios dos instrumentos
 var audio_pandeiro = preload("res://assets/audios/pandeiro.ogg")
 var audio_tambor = preload("res://assets/audios/tambor.ogg")
 var audio_ganza = preload("res://assets/audios/ganza.ogg")
-var audio_instrumento = AudioStreamPlayer.new() # player separado para instrumentos
+var audio_instrumento = AudioStreamPlayer.new()
 
 # ===============================
 # CORES BOTÕES
@@ -75,15 +74,12 @@ func _ready():
 	_conectar_botoes()
 	atualizar_pagina()
 
-	# Adiciona player de instrumento
 	add_child(audio_instrumento)
 
-	# Configura animações dos bonecos (Página 2)
 	setup_boneco(menino, ["res://assets/images/menino1.png","res://assets/images/menino2.png","res://assets/images/menino3.png"])
 	setup_boneco(menina, ["res://assets/images/menina1.png","res://assets/images/menina2.png","res://assets/images/menina3.png"])
 	setup_boneco(foliao, ["res://assets/images/foliao1.png","res://assets/images/foliao2.png","res://assets/images/foliao3.png"])
 
-	# Conecta botões dos instrumentos
 	btn_pandeiro.pressed.connect(_toca_pandeiro)
 	btn_tambor.pressed.connect(_toca_tambor)
 	btn_ganza.pressed.connect(_toca_ganza)
@@ -121,9 +117,9 @@ func _configurar_video():
 	video.stream = preload("res://assets/videos/video.ogv")
 	video.paused = true
 	video.visible = false
+	btn_video_toggle.visible = false
 	video_tocando = false
 
-	btn_video_toggle.visible = false
 	btn_video_toggle.text = "Play"
 	btn_video_toggle.pressed.connect(_video_toggle)
 	_configurar_estilo_botao(btn_video_toggle)
@@ -176,24 +172,20 @@ func atualizar_pagina():
 	imagem.expand = true
 	imagem.stretch_mode = TextureRect.STRETCH_KEEP_ASPECT_COVERED
 
-	# Página 1
 	pagina1_container.visible = (indice == 1)
 
-	# Somente página 3 mostra a pluralidade
-	pluralidade.visible = (indice == 3)
+	pluralidade.visible = (indice == 3 or indice == 4)
 
-	# Reset da pluralidade na página 3
-	if indice == 3:
+	if indice == 3 or indice == 4:
 		zoom_atual = 1.0
 		pluralidade.scale = Vector2(1, 1)
-		pluralidade.position = Vector2(0, 0)
+		# abaixar a pluralidade para não cobrir o botão de áudio
+		pluralidade.position = Vector2(0, 200)  # ajuste Y conforme necessário
 
-	# Botões navegação
 	btn_anterior.visible = indice != 0
 	btn_anterior.text = "Página anterior"
 	btn_proximo.text = "Voltar ao início" if indice == paginas.size() - 1 else "Próxima página"
 
-	# Vídeo página 5
 	if indice != 5:
 		video.stop()
 		video.paused = true
@@ -207,20 +199,19 @@ func atualizar_pagina():
 		video.paused = true
 		video_tocando = false
 
-	# Partículas página 3
-	particulas.visible = (indice == 3)
-	if indice == 3:
+	particulas.visible = (indice == 3 or indice == 4)
+	if indice == 3 or indice == 4:
 		particulas.restart()
 
-	# Acelerômetro página 6
 	acelerometro_container.visible = (indice == 6)
 
-	# Áudio principal
-	if som_ligado:
+	# 🔥 ÁUDIO ON/OFF
+	if som_ligado and not video_tocando:
 		audio_player.stream = audios[indice]
 		audio_player.play()
+	else:
+		audio_player.stop()
 
-	# === Página 2: bonecos e instrumentos ===
 	var pagina2_ativa = (indice == 2)
 	menino.visible = pagina2_ativa
 	menina.visible = pagina2_ativa
@@ -260,7 +251,7 @@ func _alternar_audio():
 		audio_player.stop()
 
 # ===============================
-# PLAY / PAUSE VÍDEO
+# PLAY / PAUSE DO VÍDEO
 # ===============================
 func _video_toggle():
 	if video_tocando:
@@ -276,10 +267,10 @@ func _video_toggle():
 		audio_player.stop()
 
 # ===============================
-# INPUT — ZOOM E ARRASTAR SÓ A PLURALIDADE (PÁGINA 3)
+# INPUT — ZOOM E ARRASTAR (PÁG 3 e 4)
 # ===============================
 func _input(event):
-	if indice != 3:
+	if indice != 3 and indice != 4:
 		return
 
 	if event is InputEventMagnifyGesture:
@@ -290,15 +281,14 @@ func _input(event):
 		pluralidade.position += event.relative
 
 # ===============================
-# FUNÇÕES BONECOS E INSTRUMENTOS
+# BONECOS E INSTRUMENTOS
 # ===============================
 func setup_boneco(boneco: AnimatedSprite2D, imagens):
 	var frames = SpriteFrames.new()
 	frames.add_animation("danca")
-	for i in range(imagens.size()):
-		frames.add_frame("danca", load(imagens[i]))
-	
-	frames.set_animation_speed("danca", 5.0)  # Godot 4
+	for img in imagens:
+		frames.add_frame("danca", load(img))
+	frames.set_animation_speed("danca", 5.0)
 	boneco.frames = frames
 	boneco.animation = "danca"
 	boneco.play()

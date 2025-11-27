@@ -159,10 +159,10 @@ offset_bottom = 44.0
 [node name="VideoPlayer" type="VideoStreamPlayer" parent="."]
 layout_direction = 1
 layout_mode = 0
-offset_left = 84.0
-offset_top = 442.0
-offset_right = 677.0
-offset_bottom = 718.0
+offset_left = 79.0
+offset_top = 445.0
+offset_right = 672.0
+offset_bottom = 721.0
 localize_numeral_system = false
 stream = ExtResource("2_0xm2m")
 expand = true
@@ -185,8 +185,8 @@ process_material = SubResource("ParticleProcessMaterial_272bh")
 [node name="AcelerometroContainer" type="Node2D" parent="."]
 
 [node name="SpriteAcelerometro" type="Sprite2D" parent="AcelerometroContainer"]
-position = Vector2(397.5, 556.5)
-scale = Vector2(1.338, 0.846)
+position = Vector2(391, 691)
+scale = Vector2(1.437, 0.777)
 texture = ExtResource("5_7mycd")
 script = ExtResource("5_lquwl")
 
@@ -212,6 +212,7 @@ texture = ExtResource("9_dg77c")
 script = ExtResource("10_2cqfq")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pagina1Container/Boneco1"]
+visible = false
 position = Vector2(-36.3318, -15.0177)
 scale = Vector2(1, 1)
 shape = SubResource("RectangleShape2D_dg77c")
@@ -223,10 +224,12 @@ texture = ExtResource("11_ycdy4")
 script = ExtResource("12_074og")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Pagina1Container/Boneco2"]
+visible = false
 position = Vector2(7.7653, 14.7935)
 shape = SubResource("RectangleShape2D_ycdy4")
 
 [node name="Pluralidade" type="TextureButton" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = -1
 anchor_top = 0.5
@@ -248,24 +251,25 @@ position = Vector2(392, 883)
 scale = Vector2(0.219238, 0.161458)
 sprite_frames = SubResource("SpriteFrames_facbu")
 animation = &"dance"
-frame_progress = 0.0112143
+frame_progress = 0.172068
 
 [node name="Menina" type="AnimatedSprite2D" parent="."]
 visible = false
-position = Vector2(156, 835)
+position = Vector2(147, 807)
 scale = Vector2(0.21875, 0.198242)
 sprite_frames = SubResource("SpriteFrames_b1qrp")
-frame_progress = 0.93012
+frame_progress = 0.367429
 
 [node name="Foliao" type="AnimatedSprite2D" parent="."]
 visible = false
 position = Vector2(622, 818)
 scale = Vector2(0.227539, 0.197917)
 sprite_frames = SubResource("SpriteFrames_come4")
-frame_progress = 0.00441047
+frame_progress = 0.441724
 
 [node name="BtnPandeiro" type="TextureButton" parent="."]
 physics_interpolation_mode = 0
+visible = false
 layout_mode = 0
 offset_left = 312.0
 offset_top = 556.0
@@ -275,6 +279,7 @@ texture_normal = ExtResource("23_4k2k6")
 stretch_mode = 0
 
 [node name="BtnTambor" type="TextureButton" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 11.0
 offset_top = 570.0
@@ -283,6 +288,7 @@ offset_bottom = 771.0
 texture_normal = ExtResource("24_0rl1p")
 
 [node name="BtnGanza" type="TextureButton" parent="."]
+visible = false
 layout_mode = 0
 offset_left = 579.0
 offset_top = 525.0
